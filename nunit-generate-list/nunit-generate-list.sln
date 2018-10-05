@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2036
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nunit-generate-list", "nunit-generate-list\nunit-generate-list.csproj", "{64EC7A92-E83C-4609-9530-2D742AD6CA13}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{64EC7A92-E83C-4609-9530-2D742AD6CA13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64EC7A92-E83C-4609-9530-2D742AD6CA13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64EC7A92-E83C-4609-9530-2D742AD6CA13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64EC7A92-E83C-4609-9530-2D742AD6CA13}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2DDC5ED3-FA72-409F-9A03-3E6023F6EC58}
+	EndGlobalSection
+EndGlobal
