@@ -13,14 +13,14 @@ namespace nunit_generate_list
 
             try
             {
-            if (args.Length != 2)
+                if (args.Length != 2)
                 {
                     ShowMessage("We need two parameters source file and destination file.", "E");
                     ShowMessage("Example: nunit-generate-list.exe \"C:\\MyTests.playlist\" \"C:\\ListTestFromVSPlaylist.tst\" ", "E");
                     return;
-            }
+                }
 
-string pathFrom = args[0];
+                string pathFrom = args[0];
                 string pathTo = args[1];
 
                 Program obj = new Program();
@@ -89,7 +89,7 @@ string pathFrom = args[0];
             {
                 TestCases objTestCase = new TestCases
                 {
-                    FullName = fTestCase.Attributes["name"]?.Value.ToString(),
+                    FullName = fTestCase.Attributes["fullname"]?.Value.ToString(),
                     Result = fTestCase.Attributes["result"]?.Value.ToString()
                 };
 
@@ -143,7 +143,10 @@ string pathFrom = args[0];
             {
                 foreach (string fTestName in pListTests)
                 {
-                    file.WriteLine(fTestName);
+                    if (!string.IsNullOrWhiteSpace(fTestName))
+                    {
+                        file.WriteLine(fTestName);
+                    }
                 }
             }
         }
