@@ -4,3 +4,6 @@
 
 /nunit-generate-list/nunit-generate-list/bin
 /nunit-generate-list/nunit-generate-list/obj
+/nunit-generate-list/.vs/nunit-generate-list/DesignTimeBuild
+/nunit-generate-list/.vs/nunit-generate-list/v15/Server/sqlite3
+/nunit-generate-list/.vs/nunit-generate-list/v15/.suo

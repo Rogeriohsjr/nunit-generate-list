@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -9,24 +7,24 @@ namespace nunit_generate_list
 {
     public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             Console.WriteLine("Converting Visual Studio Playlist or NUnit Report file to NUnit File(.tst).");
 
             try
             {
-                if (args.Length != 2)
+            if (args.Length != 2)
                 {
                     ShowMessage("We need two parameters source file and destination file.", "E");
                     ShowMessage("Example: nunit-generate-list.exe \"C:\\MyTests.playlist\" \"C:\\ListTestFromVSPlaylist.tst\" ", "E");
                     return;
-                }
+            }
 
-                String pathFrom = args[0];
-                String pathTo = args[1];
+string pathFrom = args[0];
+                string pathTo = args[1];
 
                 Program obj = new Program();
-                List<String> objListTest = new List<string>();
+                List<string> objListTest = new List<string>();
 
                 if (pathFrom.ToLower().Contains(".playlist"))
                 {
@@ -58,28 +56,28 @@ namespace nunit_generate_list
             }
         }
 
-        public static void ShowMessage(String pMessage, String pType = "S")
+        public static void ShowMessage(string pMessage, string pType = "S")
         {
-            ConsoleColor OldColor = Console.ForegroundColor;
-            ConsoleColor MessageColor = OldColor;
+            ConsoleColor oldColor = Console.ForegroundColor;
+            ConsoleColor messageColor = oldColor;
             switch (pType)
             {
                 case "S":
-                    MessageColor = ConsoleColor.Green;
+                    messageColor = ConsoleColor.Green;
                     break;
                 case "E":
-                    MessageColor = ConsoleColor.Red;
+                    messageColor = ConsoleColor.Red;
                     break;
                 default:
                     break;
             }
-            Console.ForegroundColor = MessageColor;
-            Console.WriteLine(pMessage);
-            Console.ForegroundColor = OldColor;
 
+            Console.ForegroundColor = messageColor;
+            Console.WriteLine(pMessage);
+            Console.ForegroundColor = oldColor;
         }
 
-        public NUnitReport GetNUnitResult(String pPath)
+        public NUnitReport GetNUnitResult(string pPath)
         {
             XmlDocument xmlDocument = new XmlDocument();
             xmlDocument.Load(pPath);
@@ -89,9 +87,11 @@ namespace nunit_generate_list
             NUnitReport objNUnitReport = new NUnitReport();
             foreach (XmlNode fTestCase in objListTestCases)
             {
-                TestCases objTestCase = new TestCases();
-                objTestCase.FullName = fTestCase.Attributes["name"]?.Value.ToString();
-                objTestCase.Result = fTestCase.Attributes["result"]?.Value.ToString();
+                TestCases objTestCase = new TestCases
+                {
+                    FullName = fTestCase.Attributes["name"]?.Value.ToString(),
+                    Result = fTestCase.Attributes["result"]?.Value.ToString()
+                };
 
                 objNUnitReport.ListTestCases.Add(objTestCase);
             }
@@ -101,43 +101,19 @@ namespace nunit_generate_list
 
         public List<string> GetListTestForNUnitFile(NUnitReport pNUnitReport)
         {
-            List<string> ListTest = new List<string>();
+            List<string> listTest = new List<string>();
             foreach (TestCases fTestCase in pNUnitReport.ListTestCases)
             {
-                if (fTestCase.Result == "Error")
+                if (fTestCase.Result.ToLower() == "Error".ToLower() || fTestCase.Result.ToLower() == "Failed".ToLower())
                 {
-                    ListTest.Add(fTestCase.FullName);
+                    listTest.Add(fTestCase.FullName);
                 }
             }
 
-            return ListTest;
+            return listTest;
         }
 
-
-        public class NUnitReport
-        {
-            public List<TestCases> ListTestCases { get; set; }
-
-            public NUnitReport()
-            {
-                this.ListTestCases = new List<TestCases>();
-            }
-        }
-
-        public class TestCases
-        {
-            public string FullName { get; set; }
-            public string Result { get; set; }
-
-            public TestCases()
-            {
-                this.FullName = string.Empty;
-                this.Result = string.Empty;
-            }
-        }
-
-
-        public Playlist GetPlayList(String pPath)
+        public Playlist GetPlayList(string pPath)
         {
             Playlist objPlaylist = new Playlist();
 
@@ -152,13 +128,13 @@ namespace nunit_generate_list
 
         public List<string> GetListTestForNUnitFile(Playlist pPlayList)
         {
-            List<string> ListTest = new List<string>();
+            List<string> listTest = new List<string>();
             foreach (Add fTest in pPlayList.Add)
             {
-                ListTest.Add(fTest.Test);
+                listTest.Add(fTest.Test);
             }
 
-            return ListTest;
+            return listTest;
         }
 
         public void CreateNUnitTestFile(string pPath, List<string> pListTests)
@@ -172,28 +148,49 @@ namespace nunit_generate_list
             }
         }
 
-        [Serializable()]
+        [Serializable]
         public class Playlist
         {
-            [XmlElement("Add")]
-            public Add[] Add { get; set; }
-
             public Playlist()
             {
             }
+
+            [XmlElement("Add")]
+            public Add[] Add { get; set; }
         }
 
-        [Serializable()]
+        [Serializable]
         public class Add
         {
-            [XmlAttribute]
-            public string Test { get; set; }
-
             public Add()
             {
             }
+
+            [XmlAttribute]
+            public string Test { get; set; }
         }
 
+        public class NUnitReport
+        {
+            public NUnitReport()
+            {
+                this.ListTestCases = new List<TestCases>();
+            }
 
+            public List<TestCases> ListTestCases { get; set; }
+        }
+
+        public class TestCases
+        {
+            public TestCases()
+            {
+                this.FullName = string.Empty;
+                this.Result = string.Empty;
+            }
+
+            public string FullName { get; set; }
+
+            public string Result { get; set; }
+        }
     }
 }
